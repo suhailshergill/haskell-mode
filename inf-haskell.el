@@ -112,8 +112,8 @@ The command can include arguments."
           ;; Foo.hs:318:80:
           ;;     Ambiguous occurrence `Bar'
           ;;     It could refer to either `Bar', defined at Zork.hs:311:5
-          ;; 		          or `Bar', imported from Bars at Frob.hs:32:0-16
-          ;; 				       (defined at Location.hs:97:5)
+          ;;                  or `Bar', imported from Bars at Frob.hs:32:0-16
+          ;;                       (defined at Location.hs:97:5)
           ("[ (]defined at \\(.+\\):\\([0-9]+\\):\\([0-9]+\\))?$" 1 2 3 0)
           ("imported from .* at \\(.+\\):\\([0-9]+\\):\\([0-9]+\\)-\\([0-9]+\\)$"
            1 2 (3 . 4) 0)
@@ -172,10 +172,10 @@ This will either look for a Cabal file or a \"module\" statement in the file."
   (let ((i (string-match "[\"]" string)))
     (if (null i) (split-string string)	; no quoting:  easy
       (append (unless (eq i 0) (split-string (substring string 0 i)))
-	      (let ((rfs (read-from-string string i)))
-		(cons (car rfs)
-		      (inferior-haskell-string-to-strings
-		       (substring string (cdr rfs)))))))))
+          (let ((rfs (read-from-string string i)))
+        (cons (car rfs)
+              (inferior-haskell-string-to-strings
+               (substring string (cdr rfs)))))))))
 
 (defun inferior-haskell-command (arg)
   (inferior-haskell-string-to-strings
@@ -193,19 +193,19 @@ It runs the hook `inferior-haskell-hook' after starting the process and
 setting up the inferior-haskell buffer."
   (interactive (list (inferior-haskell-command current-prefix-arg)))
   (setq inferior-haskell-buffer
-	(apply 'make-comint "haskell" (car command) nil (cdr command)))
+    (apply 'make-comint "haskell" (car command) nil (cdr command)))
   (with-current-buffer inferior-haskell-buffer
     (inferior-haskell-mode)
     (run-hooks 'inferior-haskell-hook)))
 
 (defun inferior-haskell-process (&optional arg)
   (or (if (buffer-live-p inferior-haskell-buffer)
-	  (get-buffer-process inferior-haskell-buffer))
+      (get-buffer-process inferior-haskell-buffer))
       (progn
-	(let ((current-prefix-arg arg))
-	  (call-interactively 'inferior-haskell-start-process))
-	;; Try again.
-	(inferior-haskell-process arg))))
+    (let ((current-prefix-arg arg))
+      (call-interactively 'inferior-haskell-start-process))
+    ;; Try again.
+    (inferior-haskell-process arg))))
 
 ;;;###autoload
 (defalias 'run-haskell 'switch-to-haskell)
@@ -343,7 +343,7 @@ If prefix arg \\[universal-argument] is given, just reload the previous file."
   (save-buffer)
   (let ((buf (current-buffer))
         (file buffer-file-name)
-	(proc (inferior-haskell-process)))
+    (proc (inferior-haskell-process)))
     (if file
         (with-current-buffer (process-buffer proc)
           (compilation-forget-errors)
